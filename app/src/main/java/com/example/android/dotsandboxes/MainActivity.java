@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 Size=Integer.parseInt(gridSize.getText().toString());
 
                 //border case check
-                if(Size<3){
-                    Toast.makeText(getApplicationContext(),"Enter number greater than 2",Toast.LENGTH_SHORT).show();
+                if(Size<3||Size>15){
+                    Toast.makeText(getApplicationContext(),"Enter number between 3 and 15",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     //pass through intent
