@@ -4,5 +4,6 @@
     <string name="enter_names">Enter names:</string>
     <string name="player1">Player1</string>
     <string name="player2">Player2</string>
-    <string name="submit">Submit</string>
+    <string name="Go">Go</string>
+    <string name="grid_size_number">grid size(number>2)</string>
 </resources>

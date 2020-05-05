@@ -37,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/player1"
+        android:autofillHints="@string/player1"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/player2_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,22 +50,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/player2"
+        android:autofillHints="@string/player2"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/submit"
+        app:layout_constraintBottom_toTopOf="@+id/grid_num"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/player1_name" />
 
-    <Button
-        android:id="@+id/submit"
+
+    <EditText
+        android:id="@+id/grid_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/submit"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:hint="@string/grid_size_number"
+        android:inputType="number"
+        android:autofillHints="5"
+        app:layout_constraintBottom_toTopOf="@+id/Go"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/player2_name" />
+
+    <Button
+        android:id="@+id/Go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/Go"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grid_num" />
 </androidx.constraintlayout.widget.ConstraintLayout>
