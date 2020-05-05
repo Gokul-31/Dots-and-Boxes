@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 public class GridActivity extends AppCompatActivity {
@@ -24,7 +23,6 @@ public class GridActivity extends AppCompatActivity {
         Intent gridActivity=getIntent();
         P1name=gridActivity.getStringExtra("p1");
         P2name=gridActivity.getStringExtra("p2");
-//        Size=Integer.parseInt(gridActivity.getStringExtra("Size"));
         Size=gridActivity.getIntExtra("Size",5);
         Check.setText(P1name+"   "+P2name+"  "+Size);
     }
