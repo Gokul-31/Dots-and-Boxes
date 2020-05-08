@@ -9,4 +9,6 @@
     <string name="turns">TURN:</string>
     <string name="player">Player</string>
     <string name="start">Start!!</string>
+    <string name="win">Winner:</string>
+    <string name="tie">Tie match</string>
 </resources>
