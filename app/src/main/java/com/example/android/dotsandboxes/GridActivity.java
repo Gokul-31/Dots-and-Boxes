@@ -36,7 +36,7 @@ public class GridActivity extends AppCompatActivity {
     private Paint mPaintLineBlack=new Paint();
     private int viewWidth;
     private int viewHeight;
-    private final int xMarginSpacing = 25;
+    private final int xMarginSpacing = 35;
     private int yMarginSpacing;
     private int xyGrid;
     private int lineLength;
@@ -108,7 +108,6 @@ public class GridActivity extends AppCompatActivity {
                 mPaintLineBlack.setColor(getResources().getColor(R.color.black));
                 mPaintLineBlack.setStrokeWidth(15);
 
-
                 mBitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                 imageView.setImageBitmap(mBitmap);
                 mCanvas = new Canvas(mBitmap);
@@ -127,6 +126,9 @@ public class GridActivity extends AppCompatActivity {
                     xPoints[i] = xPoints[i - 1] + lineLength;
                     yPoints[i] = yPoints[i - 1] + lineLength;
                 }
+
+                mCanvas.drawRect(0,0,viewWidth,yMarginSpacing-35,mPaintLine[0]);
+                mCanvas.drawRect(0,yPoints[Size-1]+35,viewWidth,viewHeight,mPaintLine[0]);
 
                 for (int i = 0; i < Size; i++) {
                     Log.i("MainActivity", "onClick: " + xPoints[i]);
@@ -323,6 +325,8 @@ public class GridActivity extends AppCompatActivity {
             gridLayout.setBackgroundColor(getResources().getColor(R.color.player1));
 
         }
+        mCanvas.drawRect(0,0,viewWidth,yMarginSpacing-35,mPaintLine[pTurn]);
+        mCanvas.drawRect(0,yPoints[Size-1]+35,viewWidth,viewHeight,mPaintLine[pTurn]);
     }
 
     private boolean isValidIndex(int a, int b) {
