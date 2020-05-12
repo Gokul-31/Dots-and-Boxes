@@ -1,14 +1,14 @@
 <resources>
-    <string name="app_name">Dots and Boxes</string>
-    <string name="title">DOTS AND BOXES</string>
-    <string name="enter_names">Enter names:</string>
-    <string name="player1">Player1</string>
-    <string name="player2">Player2</string>
-    <string name="Go">Go</string>
-    <string name="grid_size_number">grid size(number>2)</string>
-    <string name="turns">TURN:</string>
-    <string name="player">Player</string>
-    <string name="start">Start!!</string>
-    <string name="win">Winner:</string>
-    <string name="tie">Tie match</string>
+<string name="app_name">Dots and Boxes</string>
+<string name="title">DOTS AND BOXES</string>
+<string name="enter_names">Enter names:</string>
+<string name="player1">Player1</string>
+<string name="player2">Player2</string>
+<string name="Go">Go</string>
+<string name="grid_size_number">grid size(number>2)</string>
+<string name="turns">TURN:</string>
+<string name="player">Player</string>
+<string name="start">Start!!</string>
+<string name="win">Winner:</string>
+<string name="tie">Tie match</string>
 </resources>
