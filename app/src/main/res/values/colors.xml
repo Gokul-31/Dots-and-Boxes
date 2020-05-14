@@ -6,7 +6,10 @@
 <color name="Gray">#616161</color>
 <color name="player2">#F44336</color>
 <color name="player1">#3F51B5</color>
+    <color name="player1Box">#29B6F6</color>
+    <color name="player2Box">#FF8A65</color>
 
 <color name="white">#FFFFFF</color>
 <color name="black">#000000</color>
+    <color name="back">#FFE082</color>
 </resources>

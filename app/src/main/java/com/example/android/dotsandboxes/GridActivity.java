@@ -33,7 +33,7 @@ public class GridActivity extends AppCompatActivity {
     private Bitmap mBitmap;
     private Paint mPaint = new Paint();
     private Paint[] mPaintLine = new Paint[2];
-    private Paint mPaintLineBlack=new Paint();
+    private Paint[] mPaintBox= new Paint[2];
     private int viewWidth;
     private int viewHeight;
     private final int xMarginSpacing = 35;
@@ -102,11 +102,14 @@ public class GridActivity extends AppCompatActivity {
                 //Paint setup
                 mPaintLine[0] = new Paint();
                 mPaintLine[1] = new Paint();
-                mPaint.setColor(getResources().getColor(R.color.black));
+                mPaintBox[0]=new Paint();
+                mPaintBox[1]=new Paint();
                 mPaintLine[0].setColor(getResources().getColor(R.color.player1));
                 mPaintLine[1].setColor(getResources().getColor(R.color.player2));
-                mPaintLineBlack.setColor(getResources().getColor(R.color.black));
-                mPaintLineBlack.setStrokeWidth(15);
+                mPaintBox[0].setColor(getResources().getColor(R.color.player1Box));
+                mPaintBox[1].setColor(getResources().getColor(R.color.player2Box));
+                mPaintLine[0].setStrokeWidth(15);
+                mPaintLine[1].setStrokeWidth(15);
 
                 mBitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                 imageView.setImageBitmap(mBitmap);
@@ -174,13 +177,13 @@ public class GridActivity extends AppCompatActivity {
                                         if (isValidIndex(xBoxCheckIndex, yBoxCheckIndex))
                                             boxes[xBoxCheckIndex][yBoxCheckIndex].setSide1(true);
                                         //draw line from xBoxCheckIndex to xBoxCheckIndex+1 and Y being yBoxCheckIndex
-                                        mCanvas.drawLine(xPoints[xBoxCheckIndex], yPoints[yBoxCheckIndex], xPoints[xBoxCheckIndex + 1], yPoints[yBoxCheckIndex], mPaintLineBlack);
+                                        mCanvas.drawLine(xPoints[xBoxCheckIndex], yPoints[yBoxCheckIndex], xPoints[xBoxCheckIndex + 1], yPoints[yBoxCheckIndex], mPaintLine[pTurn]);
                                         //check whether the box is done and then set win
                                         flagChangePlayer=true;
                                         for (int i = yBoxCheckIndex; i >= yBoxCheckIndex - 1; i--) {
                                             if (isValidIndex(xBoxCheckIndex, i)) {
                                                 if (checkNSetBox(boxes[xBoxCheckIndex][i])) {
-                                                    mCanvas.drawRect(xPoints[xBoxCheckIndex] + 9, yPoints[i] + 9, xPoints[xBoxCheckIndex + 1] - 9, yPoints[i + 1] - 9, mPaintLine[pTurn]);
+                                                    mCanvas.drawRect(xPoints[xBoxCheckIndex] + 9, yPoints[i] + 9, xPoints[xBoxCheckIndex + 1] - 9, yPoints[i + 1] - 9, mPaintBox[pTurn]);
 
                                                 }
                                             }
@@ -209,13 +212,13 @@ public class GridActivity extends AppCompatActivity {
                                             if (isValidIndex(xBoxCheckIndex, yBoxCheckIndex))
                                                 boxes[xBoxCheckIndex][yBoxCheckIndex].setSide4(true);
                                             //draw line from yBoxCheckIndex to yBoxCheckIndex+1 and X being xBoxCheckIndex
-                                            mCanvas.drawLine(xPoints[xBoxCheckIndex], yPoints[yBoxCheckIndex], xPoints[xBoxCheckIndex], yPoints[yBoxCheckIndex + 1], mPaintLineBlack);
+                                            mCanvas.drawLine(xPoints[xBoxCheckIndex], yPoints[yBoxCheckIndex], xPoints[xBoxCheckIndex], yPoints[yBoxCheckIndex + 1], mPaintLine[pTurn]);
                                             //check whether the box is done and then set win
                                             flagChangePlayer=true;
                                             for (int i = xBoxCheckIndex; i >= xBoxCheckIndex - 1; i--) {
                                                 if (isValidIndex(i, yBoxCheckIndex)) {
                                                     if (checkNSetBox(boxes[i][yBoxCheckIndex])) {
-                                                        mCanvas.drawRect(xPoints[i] + 9, yPoints[yBoxCheckIndex] + 9, xPoints[i + 1] - 9, yPoints[yBoxCheckIndex + 1] - 9, mPaintLine[pTurn]);
+                                                        mCanvas.drawRect(xPoints[i] + 9, yPoints[yBoxCheckIndex] + 9, xPoints[i + 1] - 9, yPoints[yBoxCheckIndex + 1] - 9, mPaintBox[pTurn]);
                                                         flagChangePlayer=false;
                                                     }
                                                 }
