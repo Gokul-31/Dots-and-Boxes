@@ -3,39 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
-    android:background="@color/player1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/player1"
     tools:context=".GridActivity">
 
     <LinearLayout
         android:id="@+id/turnsLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="25dp">
 
         <TextView
             android:id="@+id/turnText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:padding="8dp"
             android:text="@string/turns"
-            android:background="@color/white"
             android:textSize="30sp" />
 
         <TextView
             android:id="@+id/turns"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:padding="8dp"
             android:text="@string/player"
-            android:background="@color/white"
-
             android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp">
+        <Button
+            android:id="@+id/undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/undo" />
+     </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -47,6 +61,7 @@
         app:layout_constraintTop_toBottomOf="@id/turnsLayout" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,17 +78,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
+
             <Button
                 android:id="@+id/start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/start"
                 android:padding="10dp"
+                android:text="@string/start"
                 app:layout_constraintBottom_toBottomOf="@id/gridImageView"
-                app:layout_constraintTop_toTopOf="@id/gridImageView"
                 app:layout_constraintLeft_toLeftOf="@id/gridImageView"
-                app:layout_constraintRight_toRightOf="@id/gridImageView"/>
+                app:layout_constraintRight_toRightOf="@id/gridImageView"
+                app:layout_constraintTop_toTopOf="@id/gridImageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,4 +46,8 @@ public class Box {
     public void setSide4(boolean side4){
         sides[3]=side4;
     }
+
+    public void setSideFalse(int a){
+        this.sides[a]=false;
+    }
 }
