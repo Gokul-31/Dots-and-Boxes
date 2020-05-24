@@ -16,9 +16,11 @@ public class Main2Activity extends AppCompatActivity {
     private EditText name2;
     private EditText gridSize;
     private Button goNext;
+    private EditText playerET;
     private String p1Name;
     private String p2Name;
     private int Size=5;
+    private int num=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,28 +28,28 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         //getting Views:
-        name1=findViewById(R.id.player1_name);
-        name2=findViewById(R.id.player2_name);
         gridSize=findViewById(R.id.grid_num);
         goNext=findViewById(R.id.Next);
+        playerET=findViewById(R.id.players);
 
         goNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //using the Views:
-                p1Name=name1.getText().toString();
-                p2Name=name2.getText().toString();
                 Size=Integer.parseInt(gridSize.getText().toString());
+                num=Integer.parseInt(playerET.getText().toString());
 
                 //border case check
                 if(Size<3||Size>15){
-                    Toast.makeText(getApplicationContext(),"Enter number between 3 and 15",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Enter size between 3 and 15",Toast.LENGTH_SHORT).show();
+                }
+                else if(num<2||num>6){
+                    Toast.makeText(getApplicationContext(),"Enter players between 2 and 6",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     //pass through intent
-                    Intent gridActivity = new Intent(getApplicationContext(), GridActivity.class);
-                    gridActivity.putExtra("p1", p1Name);
-                    gridActivity.putExtra("p2", p2Name);
+                    Intent gridActivity = new Intent(Main2Activity.this, GridActivity.class);
+                    gridActivity.putExtra("Num",num);
                     gridActivity.putExtra("Size", Size);
                     startActivity(gridActivity);
                 }

@@ -12,4 +12,7 @@
     <string name="win">Winner:</string>
     <string name="tie">Tie match</string>
     <string name="undo">Undo</string>
+    <string name="no_of_players">No of players</string>
+    <string name="update">update</string>
+    <string name="restart">Restart</string>
 </resources>

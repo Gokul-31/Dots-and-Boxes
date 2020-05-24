@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<color name="colorPrimary">#6200EE</color>
-<color name="colorPrimaryDark">#3700B3</color>
-<color name="colorAccent">#03DAC5</color>
-<color name="Gray">#616161</color>
-<color name="player2">#F44336</color>
-<color name="player1">#3F51B5</color>
-    <color name="player1Box">#29B6F6</color>
-    <color name="player2Box">#FF8A65</color>
-
-<color name="white">#FFFFFF</color>
-<color name="black">#000000</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="Gray">#616161</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="back">#FFE082</color>
+    <color name="winBack">#263238</color>
+    <color name="color1">#4CAF50</color>
+    <color name="color2">#512DA8</color>
+    <color name="color3">#FDD835</color>
+    <color name="color4">#FF5722</color>
+    <color name="color5">#795548</color>
+    <color name="color6">#9C27B0</color>
 </resources>

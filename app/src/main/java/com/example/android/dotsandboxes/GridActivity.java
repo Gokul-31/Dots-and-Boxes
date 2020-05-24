@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class GridActivity extends AppCompatActivity {
 
     private String P1name;
@@ -28,10 +30,15 @@ public class GridActivity extends AppCompatActivity {
     private TextView turnsView;
     private Canvas mCanvas;
     private Bitmap mBitmap;
-    private Paint mPaint = new Paint();
-    private Paint mPaintWhite = new Paint();
-    private Paint[] mPaintLine = new Paint[2];
-    private Paint[] mPaintBox = new Paint[2];
+    //Paint
+    private Paint mPaintBlack = new Paint();  //for black dots
+    private Paint mPaintWhite = new Paint();  //for undo function
+//    private Paint[] mPaintLine = new Paint[2];
+//    private Paint[] mPaintBox = new Paint[2];
+    private ArrayList<Paint> mPaintLine = new ArrayList<Paint>();
+    private ArrayList<Paint> mPaintBox = new ArrayList<Paint>();
+    private final int MUL=200;
+    //grid
     private int viewWidth;
     private int viewHeight;
     private final int xMarginSpacing = 35;
@@ -51,18 +58,22 @@ public class GridActivity extends AppCompatActivity {
     private boolean flagChangePlayer = true;
     private ConstraintLayout ll;
     private int totalBoxes;
-    private int[] boxCount = new int[2];
-    private int winner = -1;
+    private ArrayList<Inte> winner = new ArrayList<>();
     private TextView turnTextView;
     private Button undoBtn;
+    private ArrayList<Inte> boxCount=new ArrayList<>();
+    private int[] colors =new int[6];
     //undo
     private int[] undoSideI = new int[2];
     private int[] undoSideJ = new int[2];
     private int[] undoSideIndex = new int[2];
     private int[] undoX = new int[2];
     private int[] undoY = new int[2];
-    private boolean undoChange = true;
+    private boolean undoChanged = true;
     private int lastPlayer=0;
+    //players supp
+    private static int num;
+    private ArrayList<String> names= new ArrayList<String>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -71,9 +82,28 @@ public class GridActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grid);
 
         final Intent gridActivity = getIntent();
-        P1name = gridActivity.getStringExtra("p1");
-        P2name = gridActivity.getStringExtra("p2");
         Size = gridActivity.getIntExtra("Size", 5);
+        num=gridActivity.getIntExtra("Num",3);
+
+        //setColor
+        colors[0]=R.color.color1;
+        colors[1]=R.color.color2;
+        colors[2]=R.color.color3;
+        colors[3]=R.color.color4;
+        colors[4]=R.color.color5;
+        colors[5]=R.color.color6;
+
+        //save names and paint
+        for (int i=0;i<num;i++){
+            names.add("player "+ (i+1));
+            mPaintLine.add(new Paint());
+            mPaintBox.add(new Paint());
+            mPaintLine.get(i).setColor(getResources().getColor(colors[i]));
+            mPaintLine.get(i).setStrokeWidth(15);
+            mPaintBox.get(i).setColor(getResources().getColor(colors[i]));
+            boxCount.add(new Inte(0));
+        }
+
 
         //save for the views
         boxes = new Box[Size - 1][Size - 1];
@@ -92,8 +122,6 @@ public class GridActivity extends AppCompatActivity {
         undoBtn = findViewById(R.id.undo);
 
         totalBoxes = (int) Math.pow(Size - 1, 2);
-        boxCount[0] = 0;
-        boxCount[1] = 0;
 
         xPoints = new int[Size];
         yPoints = new int[Size];
@@ -110,16 +138,6 @@ public class GridActivity extends AppCompatActivity {
                 //Paint setup
                 mPaintWhite.setColor(getResources().getColor(R.color.white));
                 mPaintWhite.setStrokeWidth(15);
-                mPaintLine[0] = new Paint();
-                mPaintLine[1] = new Paint();
-                mPaintBox[0] = new Paint();
-                mPaintBox[1] = new Paint();
-                mPaintLine[0].setColor(getResources().getColor(R.color.player1));
-                mPaintLine[1].setColor(getResources().getColor(R.color.player2));
-                mPaintBox[0].setColor(getResources().getColor(R.color.player1Box));
-                mPaintBox[1].setColor(getResources().getColor(R.color.player2Box));
-                mPaintLine[0].setStrokeWidth(15);
-                mPaintLine[1].setStrokeWidth(15);
 
                 mBitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
                 imageView.setImageBitmap(mBitmap);
@@ -140,8 +158,8 @@ public class GridActivity extends AppCompatActivity {
                     yPoints[i] = yPoints[i - 1] + lineLength;
                 }
 
-                mCanvas.drawRect(0, 0, viewWidth, yMarginSpacing - 35, mPaintLine[0]);
-                mCanvas.drawRect(0, yPoints[Size - 1] + 35, viewWidth, viewHeight, mPaintLine[0]);
+                mCanvas.drawRect(0, 0, viewWidth, yMarginSpacing - 35, mPaintLine.get(0));
+                mCanvas.drawRect(0, yPoints[Size - 1] + 35, viewWidth, viewHeight, mPaintLine.get(0));
 
                 for (int i = 0; i < Size; i++) {
                     Log.i("MainActivity", "onClick: " + xPoints[i]);
@@ -151,8 +169,8 @@ public class GridActivity extends AppCompatActivity {
 
                 //drawing done
                 pTurn = 0;
-                turnsView.setText(P1name);
-                gridLayout.setBackgroundColor(getResources().getColor(R.color.player1));
+                turnsView.setText(names.get(pTurn));
+                gridLayout.setBackgroundColor(getResources().getColor(R.color.color1));
             }
         });
 
@@ -175,7 +193,7 @@ public class GridActivity extends AppCompatActivity {
                                         checkValue = boxes[xBCI][yBCI].getSides()[0];
                                     }
                                     if (!checkValue) {
-                                        undoChange = false;
+                                        undoChanged = false;
                                         //change the 3rd one of yBCI-1 to true if it already isnt
                                         if (isValidIndex(xBCI, yBCI - 1)) {
                                             undoSideI[0] = xBCI;
@@ -199,7 +217,7 @@ public class GridActivity extends AppCompatActivity {
                                             undoSideIndex[1] = -1;
                                         }
                                         //draw line from xBCI to xBCI+1 and Y being yBCI
-                                        mCanvas.drawLine(xPoints[xBCI], yPoints[yBCI], xPoints[xBCI + 1], yPoints[yBCI], mPaintLine[pTurn]);
+                                        mCanvas.drawLine(xPoints[xBCI], yPoints[yBCI], xPoints[xBCI + 1], yPoints[yBCI], mPaintLine.get(pTurn));
                                         undoX[0] = xPoints[xBCI];
                                         undoX[1] = xPoints[xBCI + 1];
                                         undoY[0] = yPoints[yBCI];
@@ -209,7 +227,7 @@ public class GridActivity extends AppCompatActivity {
                                         for (int i = yBCI; i >= yBCI - 1; i--) {
                                             if (isValidIndex(xBCI, i)) {
                                                 if (checkNSetBox(boxes[xBCI][i])) {
-                                                    mCanvas.drawRect(xPoints[xBCI] + 9, yPoints[i] + 9, xPoints[xBCI + 1] - 9, yPoints[i + 1] - 9, mPaintBox[pTurn]);
+                                                    mCanvas.drawRect(xPoints[xBCI] + 9, yPoints[i] + 9, xPoints[xBCI + 1] - 9, yPoints[i + 1] - 9, mPaintBox.get(pTurn));
                                                 }
                                             }
                                         }
@@ -232,7 +250,7 @@ public class GridActivity extends AppCompatActivity {
                                             checkValue = boxes[xBCI][yBCI].getSides()[3];
                                         }
                                         if (!checkValue) {
-                                            undoChange = false;
+                                            undoChanged = false;
                                             //change the 2nd one of xBCI-1 to true
                                             if (isValidIndex(xBCI - 1, yBCI)) {
                                                 boxes[xBCI - 1][yBCI].setSide2(true);
@@ -256,7 +274,7 @@ public class GridActivity extends AppCompatActivity {
                                                 undoSideIndex[1] = -1;
                                             }
                                             //draw line from yBCI to yBCI+1 and X being xBCI
-                                            mCanvas.drawLine(xPoints[xBCI], yPoints[yBCI], xPoints[xBCI], yPoints[yBCI + 1], mPaintLine[pTurn]);
+                                            mCanvas.drawLine(xPoints[xBCI], yPoints[yBCI], xPoints[xBCI], yPoints[yBCI + 1], mPaintLine.get(pTurn));
                                             undoX[0] = xPoints[xBCI];
                                             undoX[1] = xPoints[xBCI];
                                             undoY[0] = yPoints[yBCI];
@@ -266,7 +284,7 @@ public class GridActivity extends AppCompatActivity {
                                             for (int i = xBCI; i >= xBCI - 1; i--) {
                                                 if (isValidIndex(i, yBCI)) {
                                                     if (checkNSetBox(boxes[i][yBCI])) {
-                                                        mCanvas.drawRect(xPoints[i] + 9, yPoints[yBCI] + 9, xPoints[i + 1] - 9, yPoints[yBCI + 1] - 9, mPaintBox[pTurn]);
+                                                        mCanvas.drawRect(xPoints[i] + 9, yPoints[yBCI] + 9, xPoints[i + 1] - 9, yPoints[yBCI + 1] - 9, mPaintBox.get(pTurn));
                                                         flagChangePlayer = false;
                                                     }
                                                 }
@@ -291,31 +309,24 @@ public class GridActivity extends AppCompatActivity {
         undoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!undoChange) {
-                    undoChange = true;
-                    if (undoSideI[0] != -1) {
-                        if (boxes[undoSideI[0]][undoSideJ[0]].isDone()) { //make it white
-                            boxes[undoSideI[0]][undoSideJ[0]].setWin(0);
-                            mCanvas.drawRect(xPoints[undoSideI[0]] + 9, yPoints[undoSideJ[0]] + 9, xPoints[undoSideI[0] + 1] - 9, yPoints[undoSideJ[0] + 1] - 9, mPaintWhite);
-                            boxCount[pTurn]--;
-                            lastPlayer=pTurn;
+                if (!undoChanged) {
+                    undoChanged = true;
+                    for (int i=0;i<2;i++){
+                        if (undoSideI[0] != -1) {
+                            if (boxes[undoSideI[0]][undoSideJ[0]].isDone()) { //make it white
+                                boxes[undoSideI[0]][undoSideJ[0]].setWin(0);
+                                mCanvas.drawRect(xPoints[undoSideI[0]] + 9, yPoints[undoSideJ[0]] + 9, xPoints[undoSideI[0] + 1] - 9, yPoints[undoSideJ[0] + 1] - 9, mPaintWhite);
+                                boxCount.get(pTurn).decN();
+                                lastPlayer=pTurn;
+                            }
+                            boxes[undoSideI[0]][undoSideJ[0]].setSideFalse(undoSideIndex[0]);
                         }
-                        boxes[undoSideI[0]][undoSideJ[0]].setSideFalse(undoSideIndex[0]);
-                    }
-                    if (undoSideI[1] != -1) {
-                        if (boxes[undoSideI[1]][undoSideJ[1]].isDone()) {
-                            boxes[undoSideI[1]][undoSideJ[1]].setWin(0);
-                            mCanvas.drawRect(xPoints[undoSideI[1]] + 9, yPoints[undoSideJ[1]] + 9, xPoints[undoSideI[1] + 1] - 9, yPoints[undoSideJ[1] + 1] - 9, mPaintWhite);
-                            boxCount[pTurn]--;
-                            lastPlayer=pTurn;
-                        }
-                        boxes[undoSideI[1]][undoSideJ[1]].setSideFalse(undoSideIndex[1]);
                     }
 
                     //check for completed boxes also// decrease while box is refrained from completion
                     mCanvas.drawLine(undoX[0], undoY[0], undoX[1], undoY[1], mPaintWhite);
-                    mCanvas.drawCircle(undoX[0], undoY[0], 14, mPaint);
-                    mCanvas.drawCircle(undoX[1], undoY[1], 14, mPaint);
+                    mCanvas.drawCircle(undoX[0], undoY[0], 14, mPaintBlack);
+                    mCanvas.drawCircle(undoX[1], undoY[1], 14, mPaintBlack);
                     //deal with the player chance
                     undoPlayer();
                 }
@@ -326,11 +337,11 @@ public class GridActivity extends AppCompatActivity {
 
     private void undoPlayer() {
         if(lastPlayer==0){
-            pTurn=1;
+            pTurn=num-1;
         }
         else
         {
-            pTurn=0;
+            pTurn--;
         }
         changePTurn();
     }
@@ -343,35 +354,49 @@ public class GridActivity extends AppCompatActivity {
         if (box.isDone() && box.getWin() == 0) {
             box.setWin(pTurn);
             flagChangePlayer = false;
-            boxCount[pTurn]++;
-            if (totalBoxes == boxCount[0] + boxCount[1]) {
-                if (boxCount[0] == boxCount[1])
-                    winner = 2;
-                else if (boxCount[0] > boxCount[1])
-                    winner = 0;
-                else
-                    winner = 1;
-                afterFinish();
-            }
+            boxCount.get(pTurn).incN();
+            //checkFinish
+            checkFinish();
             return true;
         }
         return false;
     }
 
-    private void afterFinish() {
-        gridLayout.removeView(imageView);
-        turnTextView.setText(R.string.win);
-        if (winner == 0) {
-            turnsView.setText(P1name);
-            ll.setBackgroundColor(getResources().getColor(R.color.player1));
-        } else if (winner == 1) {
-            turnsView.setText(P2name);
-            ll.setBackgroundColor(getResources().getColor(R.color.player1));
-
-        } else {
-            turnsView.setText(R.string.tie);
-            ll.setBackgroundColor(getResources().getColor(R.color.Gray));
+    private void checkFinish() {
+        int sum=0;
+        for(int i=0;i<num;i++){
+            sum+=boxCount.get(i).getN();
         }
+        if(sum==totalBoxes){
+            int max=0;
+            for(int i=0;i<num;i++){
+                max= Math.max(max, boxCount.get(i).getN());
+            }
+            for(int i=0;i<num;i++){
+                if(max==boxCount.get(i).getN()){
+                    winner.add(new Inte(i));
+                }
+            }
+            afterFinish();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void afterFinish() {
+        String resultText;
+        if(winner.size()==1){
+            resultText="WINNER:\n"+names.get(winner.get(0).getN());
+        }
+        else {
+              resultText="WINNER: \n";
+            for (int i = 0; i < winner.size(); i++) {
+                resultText+="\n"+names.get(winner.get(i).getN());
+            }
+        }
+
+        Intent resultIntent = new Intent(getApplicationContext(),result.class);
+        resultIntent.putExtra("result",resultText);
+        startActivity(resultIntent);
     }
 
 
@@ -409,21 +434,18 @@ public class GridActivity extends AppCompatActivity {
 
     private void changePTurn() {
         flagChangePlayer = true;
-        if (pTurn == 0) {
-            pTurn = 1; //1 means 2nd player
-            turnsView.setText(P2name);
-            ll.setBackgroundColor(getResources().getColor(R.color.player2));
-            gridLayout.setBackgroundColor(getResources().getColor(R.color.player2));
 
-        } else {
-            pTurn = 0;  //0 means 1st  player
-            turnsView.setText(P1name);
-            ll.setBackgroundColor(getResources().getColor(R.color.player1));
-            gridLayout.setBackgroundColor(getResources().getColor(R.color.player1));
-
+        if(pTurn==num-1){
+            pTurn=0;
         }
-        mCanvas.drawRect(0, 0, viewWidth, yMarginSpacing - 35, mPaintLine[pTurn]);
-        mCanvas.drawRect(0, yPoints[Size - 1] + 35, viewWidth, viewHeight, mPaintLine[pTurn]);
+        else
+            pTurn++;
+        turnsView.setText(names.get(pTurn));
+        ll.setBackgroundColor(getResources().getColor(colors[pTurn]));
+        gridLayout.setBackgroundColor(getResources().getColor(colors[pTurn]));
+
+        mCanvas.drawRect(0, 0, viewWidth, yMarginSpacing - 35, mPaintLine.get(pTurn));
+        mCanvas.drawRect(0, yPoints[Size - 1] + 35, viewWidth, viewHeight, mPaintLine.get(pTurn));
     }
 
     private boolean isValidIndex(int a, int b) {
@@ -433,7 +455,7 @@ public class GridActivity extends AppCompatActivity {
     private void drawGrid() {
         for (int i = 0; i < Size; i++) {
             for (int j = 0; j < Size; j++) {
-                mCanvas.drawCircle(xPoints[i], yPoints[j], 14, mPaint);
+                mCanvas.drawCircle(xPoints[i], yPoints[j], 14, mPaintBlack);
             }
         }
     }
