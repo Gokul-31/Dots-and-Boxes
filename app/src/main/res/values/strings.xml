@@ -15,4 +15,11 @@
     <string name="no_of_players">No of players</string>
     <string name="update">update</string>
     <string name="restart">Restart</string>
+    <string-array name="spin1">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
 </resources>

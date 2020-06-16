@@ -332,7 +332,6 @@ public class GridActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void undoPlayer() {

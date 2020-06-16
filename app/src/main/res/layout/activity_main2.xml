@@ -7,6 +7,7 @@
     android:background="#553B39"
     tools:context=".MainActivity">
 
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -17,27 +18,11 @@
         android:textSize="40sp"
         android:textStyle="bold"
         app:fontFamily="casual"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FF9800"
-        android:padding="8dp"
-        android:text="@string/enter_names"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/players"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/grid_num"
@@ -60,8 +45,9 @@
         android:id="@+id/players"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:autofillHints="5"
+        android:ems="10"
+        android:gravity="center_horizontal"
         android:hint="@string/no_of_players"
         android:inputType="number"
         android:textAlignment="center"
@@ -71,8 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
         android:id="@+id/Next"
@@ -86,4 +71,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/grid_num" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

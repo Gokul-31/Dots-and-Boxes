@@ -1,5 +1,4 @@
 package com.example.android.dotsandboxes;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -30,5 +29,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_TIME_OUT);
+
     }
 }
